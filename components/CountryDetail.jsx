@@ -1,38 +1,47 @@
 import { useEffect, useState } from "react";
-import './CountryDetail.css'
+import "./CountryDetail.css";
+import { useParams } from "react-router-dom";
 
 const CountryDetail = () => {
-  const countryName = new URLSearchParams(location.search).get("name");
+  const params = useParams();
+  const countryName = params.country;
   const [countryData, setCountryData] = useState(null);
+  const [notFound, setNotFound] = useState(false);
 
   useEffect(() => {
     fetch(`https://restcountries.com/v3.1/name/${countryName}?fullText=true`)
       .then((res) => res.json())
       .then(([data]) => {
-        console.log(data);
         setCountryData({
           name: data.name.common,
           nativeName: Object.values(data.name.nativeName)[0].common,
           population: data.population,
           region: data.region,
           subRegion: data.subregion,
-          capital:data.capital.join(','),
-          flag:data.flags.svg,
-          tld:data.tld,
-          currencies:Object.values(data.currencies)
-          .map((currency) => currency.name)
-          .join(', '),
-          languages:Object.values(data.languages).join(', ')
+          capital: data.capital.join(","),
+          flag: data.flags.svg,
+          tld: data.tld,
+          currencies: Object.values(data.currencies)
+            .map((currency) => currency.name)
+            .join(", "),
+          languages: Object.values(data.languages).join(", "),
         });
+      })
+      .catch((err) => {
+        setNotFound(true);
       });
   }, []);
+
+  if (notFound) {
+    return <div>Country Not Found</div>;
+  }
 
   return countryData === null ? (
     "Loading..."
   ) : (
     <main>
       <div className="country-details-container">
-        <span className="back-button">
+        <span className="back-button" onClick={()=>{history.back()}}>
           <i className="fa-solid fa-arrow-left" />
           &nbsp; Back
         </span>
