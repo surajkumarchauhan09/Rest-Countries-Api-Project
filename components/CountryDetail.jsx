@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
 import "./CountryDetail.css";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 const CountryDetail = () => {
   const params = useParams();
   const countryName = params.country;
+
+  console.log(countryName);
+
   const [countryData, setCountryData] = useState(null);
   const [notFound, setNotFound] = useState(false);
 
@@ -25,12 +28,32 @@ const CountryDetail = () => {
             .map((currency) => currency.name)
             .join(", "),
           languages: Object.values(data.languages).join(", "),
+          borders: [],
         });
+        if(!data.borders){
+          data.borders=[]
+        }
+        Promise.all(data.borders.map((border) => {
+          return fetch(`https://restcountries.com/v3.1/alpha/${border}`)
+            .then((res) => res.json())
+            .then(([borderCountry]) => {
+              return borderCountry.name.common
+            });
+        })).then((borders)=>{
+          setCountryData((prevState)=>({...prevState,borders}))
+        })
+      //   data.borders.map((border) => {
+      //     fetch(`https://restcountries.com/v3.1/alpha/${border}`)
+      //       .then((res) => res.json())
+      //       .then(([borderCountry]) => {
+      //         setCountryData((prevState)=>({...prevState,borders:[...prevState.borders,borderCountry.name.common]}));
+      //       });
+      //   });
       })
       .catch((err) => {
         setNotFound(true);
       });
-  }, []);
+  }, [countryName]);
 
   if (notFound) {
     return <div>Country Not Found</div>;
@@ -41,7 +64,12 @@ const CountryDetail = () => {
   ) : (
     <main>
       <div className="country-details-container">
-        <span className="back-button" onClick={()=>{history.back()}}>
+        <span
+          className="back-button"
+          onClick={() => {
+            history.back();
+          }}
+        >
           <i className="fa-solid fa-arrow-left" />
           &nbsp; Back
         </span>
@@ -85,9 +113,16 @@ const CountryDetail = () => {
                 <span className="languages" />
               </p>
             </div>
-            <div className="border-countries">
-              <b>Border Countries: </b>&nbsp;
-            </div>
+            {countryData.borders.length !== 0 && (
+              <div className="border-countries">
+                <b>Border Countries: </b>&nbsp;
+                {countryData.borders.map((border) => (
+                  <Link key={border} to={`/${border}`}>
+                    {border}
+                  </Link>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </div>
