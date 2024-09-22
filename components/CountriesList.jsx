@@ -5,7 +5,6 @@ import CountriesListShimmer from "./CountriesListShimmer";
 const CountriesList = ({ query }) => {
   const [countriesData, setCountriesData] = useState([]);
 
-
   useEffect(() => {
     fetch("https://restcountries.com/v3.1/all")
       .then((res) => res.json())
