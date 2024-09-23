@@ -1,10 +1,8 @@
 import { useEffect, useState } from "react";
 import CountryCard from "./CountryCard";
 import CountriesListShimmer from "./CountriesListShimmer";
-// import countriesData from "../countriesData";
 const CountriesList = ({ query }) => {
   const [countriesData, setCountriesData] = useState([]);
-  // const [filteredData, setQuery] = useFilter(data, () => '')
 
   useEffect(() => {
     fetch("https://restcountries.com/v3.1/all")

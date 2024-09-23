@@ -1,12 +1,9 @@
 import { useContext, useEffect, useState } from "react";
 import "./CountryDetail.css";
 import { Link, useLocation, useParams } from "react-router-dom";
-// import { ThemeContext } from "../contexts/ThemeContext";
 import { useTheme } from "../hooks/useTheme";
-// import { useWindowSize } from "../hooks/useWindowSize";
 
 const CountryDetail = () => {
-  // const [isDark] = useContext(ThemeContext);
   const [isDark] = useTheme()
   const params = useParams();
   const countryName = params.country;
@@ -14,7 +11,6 @@ const CountryDetail = () => {
 
   const [countryData, setCountryData] = useState(null);
   const [notFound, setNotFound] = useState(false);
-  // const windowSize = useWindowSize();
 
   function updateCountryData(data) {
     setCountryData({
@@ -63,13 +59,6 @@ const CountryDetail = () => {
       .then((res) => res.json())
       .then(([data]) => {
         updateCountryData(data);
-        //   data.borders.map((border) => {
-        //     fetch(`https://restcountries.com/v3.1/alpha/${border}`)
-        //       .then((res) => res.json())
-        //       .then(([borderCountry]) => {
-        //         setCountryData((prevState)=>({...prevState,borders:[...prevState.borders,borderCountry.name.common]}));
-        //       });
-        //   });
       })
       .catch((err) => {
         setNotFound(true);
@@ -84,9 +73,6 @@ const CountryDetail = () => {
     "Loading..."
   ) : (
     <main className={`${isDark ? "dark" : ""}`}>
-      {/* <h1 style={{ textAlign: "center" }}>
-        {windowSize.width} x {windowSize.height}
-      </h1> */}
       <div className="country-details-container">
         <span
           className="back-button"

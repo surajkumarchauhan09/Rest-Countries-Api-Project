@@ -1,7 +1,5 @@
 import "./CountriesListShimmer.css";
 const CountriesListShimmer = () => {
-  // const array = new Array(10).fill(1) //This is not in use
-  // console.log(array)
 
   return (
     <div className="countries-container">
