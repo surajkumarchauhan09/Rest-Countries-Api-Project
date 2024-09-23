@@ -1,6 +1,9 @@
-const Header = ({theme}) => {
+import { useContext } from "react";
+import { ThemeContext } from "../contexts/ThemeContext";
 
-const[isDark , setIsDark] = theme
+const Header = () => {
+
+const[isDark , setIsDark] = useContext(ThemeContext);
 
 // if(isDark){
 //   document.body.classList.add("dark");//this is not good way because here we are making change in directly in dome
