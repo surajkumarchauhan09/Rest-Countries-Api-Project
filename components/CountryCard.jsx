@@ -1,9 +1,11 @@
 import { Link } from "react-router-dom";
 
-const CountryCard = ({ name, population, flag, region, capital,data }) => {
+const CountryCard = ({ name, population, flag, region, capital, data }) => {
   return (
     <Link className="country-card" to={`/${name}`} state={data}>
-      <img src={flag} alt="South Georgia flag" />
+      <div className="flag-container">
+        <img src={flag} alt={name + " Flag"} />
+      </div>
       <div className="card-text">
         <h3 className="card-title">{name}</h3>
         <p>
